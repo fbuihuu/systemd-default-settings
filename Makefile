@@ -1,3 +1,5 @@
+VERSION ?= $(shell git describe --always)
+
 .PHONY: archive clean SUSE.list SLE.list openSUSE.list
 
 all: file-lists
@@ -17,5 +19,11 @@ openSUSE.list:
 install:
 	tar -c usr/ | tar -x -C${DESTDIR}/
 
+archive: systemd-default-settings-$(VERSION).tar.gz
+
+systemd-default-settings-$(VERSION).tar.gz:
+	git archive --format=tgz --prefix=systemd-default-settings-$(VERSION)/ HEAD >$@
+
 clean:
 	rm -f *.list
+	rm -f *.tar.gz
