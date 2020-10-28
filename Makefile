@@ -1,4 +1,4 @@
-VERSION ?= $(shell git describe --always)
+NAME = systemd-default-settings
 
 .PHONY: archive clean
 
@@ -7,10 +7,9 @@ all:
 install:
 	tar -c usr/ | tar -x -C${DESTDIR}/
 
-archive: systemd-default-settings-$(VERSION).tar.gz
-
-systemd-default-settings-$(VERSION).tar.gz:
-	git archive --format=tgz --prefix=systemd-default-settings-$(VERSION)/ HEAD >$@
+archive:
+	@ver=$$(git describe --always) && \
+	git archive --format=tgz --prefix=$(NAME)-$$ver/ HEAD >$(NAME)-$$ver.tar.gz
 
 clean:
 	rm -f *.tar.gz
